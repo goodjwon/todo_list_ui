@@ -20,12 +20,32 @@ export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([])
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      setTasks([...tasks, task])
-      setTask({ id: task.id + 1, name: '', completed: false })
-    } else {
-      setTask({ ...task, name: event.target.value })
+    console.log('Input Value:', event.target.value);
+    console.log('Tasks:', tasks);
+  
+    const inputValue = event.target.value.trim();
+    console.log('Trimmed Input Value:', inputValue);
+  
+    if (inputValue !== '') {
+      setTask({ ...task, name: inputValue });
     }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && task.name.trim() !== '') {
+      event.preventDefault();
+      setTasks(prevTasks => [...prevTasks, task]);
+      setTask(prevTask => ({
+        id: prevTask.id + 1,
+        name: '',
+        completed: false
+      }));
+    }
+  };
+  
+
+  const handleTaskClick = (id: number) => {
+    setTasks(tasks.map(task => task.id === id ? { ...task, completed: !task.completed } : task))
   }
 
   return (
@@ -39,7 +59,7 @@ export default function Home() {
       <div className="wrapper">
         <div className="task-input">
           <img src="bars-icon.svg" alt="icon" />
-          <input type="text" placeholder="Add a new task" value={task.name} onChange={handleInputChange} onKeyDown={handleInputChange} />
+          <input type="text" placeholder="Add a new task" value={task.name} onChange={handleInputChange} onKeyUp={handleKeyDown} />
         </div>
         <div className="controls">
           <div className="filters">
@@ -51,7 +71,9 @@ export default function Home() {
         </div>
         <ul className="task-box">
           {tasks.map((task) => (
-            <li key={task.id}>{task.name}</li>
+            <li key={task.id} onClick={() => handleTaskClick(task.id)}>
+              <p className={task.completed ? 'checked' : ''}>{task.name}</p>
+            </li>
           ))}
         </ul>
       </div>

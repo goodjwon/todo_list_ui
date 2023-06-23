@@ -142,6 +142,11 @@ body{
 .task label p.checked{
   text-decoration: line-through;
 }
+
+.checked{
+  text-decoration: line-through;
+}
+
 .task-box .settings{
   position: relative;
 }
