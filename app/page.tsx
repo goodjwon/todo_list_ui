@@ -1,6 +1,8 @@
 "use client";
 
 import Head from 'next/head'
+import Image from 'next/image'
+
 import { useState } from 'react'
 
 export default function Home() {
@@ -58,7 +60,7 @@ export default function Home() {
 
       <div className="wrapper">
         <div className="task-input">
-          <img src="bars-icon.svg" alt="icon" />
+          <Image src="bars-icon.svg" alt="icon" width={20} height={20} />
           <input type="text" placeholder="Add a new task" value={task.name} onChange={handleInputChange} onKeyUp={handleKeyDown} />
         </div>
         <div className="controls">
